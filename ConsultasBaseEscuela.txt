@@ -1,0 +1,113 @@
+1.-Todos los alumnos de la materia 3 en el periodo Enero-Abril del 2010 que tengan
+un promedio de 8 a 8.9
+
+select nomalumno,amalumno,apalumno,matricula,  calificaciondelparcial 
+from alumnos inner join agrupaciones on alumnos.`id_alumno`=agrupaciones.`id_alumno` inner join calificacionesalumnos on agrupaciones.id_agrupacion=calificacionesalumnos.id_agrupacion inner join periodos on periodos.id_periodo=agrupaciones.id_periodo inner join materias on materias.id_materia=agrupaciones.id_materia
+where nommateria ='Programacion' and nomperiodo = 'Ene-Abr 2010' and calificaciondelparcial between 8 and 8.9
+
+
+2.-Todos los alumnos de ingeniería del periodo Enero-Abril del 2011 del grupo 3
+
+select tipoalumno, nomperiodo, nomgrupo
+from tipoalumnos inner join alumnos on tipoalumnos.id_tipoalumno=alumnos.id_tipoalumno
+inner join agrupaciones on alumnos.id_alumno=agrupaciones.id_alumno
+inner join periodos on agrupaciones.id_periodo=periodos.id_periodo
+inner join grupos on agrupaciones.id_grupo=grupos.id_grupo
+where   tipoalumno = 'Ingenieria' and nomperiodo = 'Ene-Abr 2011' and nomgrupo = '2TIC3' 
+
+
+3.-Todos los alumnos de TSU que faltaron el 20 de enero del 2012
+
+select nomalumno,amalumno,apalumno,matricula,fecha,tipoasistencia 
+from alumnos inner join asistencias on alumnos.id_alumno=asistencias.id_alumno 
+inner join tipoasistencia on tipoasistencia.id_tipoasistencia=asistencias.id_tipoasistencia
+where fecha ='2012-01-20' and tipoasistencia ='Falta'
+
+
+4.-Todos los alumnos de Ingeniería que entren entre las 5 pm y las 8 pm
+
+select tipoalumno,horainicio
+from tipoalumnos inner join alumnos on 
+tipoalumnos.id_tipoalumno=alumnos.id_tipoalumno
+inner join agrupaciones on alumnos.id_alumno=agrupaciones.id_alumno
+inner join horarios on agrupaciones.id_agrupacion=horarios.id_agrupacion
+where   tipoalumno = 'Ingenieria' and horainicio >'5:00:00' and horainicio<'8:00:00'
+
+
+5.-Todos los alumnos de Ingeniería que en la materia 2 reprobaron
+
+select nomalumno,amalumno,apalumno, tipoalumno, nommateria, calificaciondelparcial from alumnos inner join tipoalumnos on alumnos.id_tipoalumno=tipoalumnos.id_tipoalumno inner join agrupaciones on alumnos.id_alumno=agrupaciones.id_alumno inner join materias
+on agrupaciones.id_materia=materias.id_materia inner join calificacionesalumnos on agrupaciones.id_agrupacion=calificacionesalumnos.id_agrupacion
+where nommateria ='Redes' and calificaciondelparcial < 8 and tipoalumno='Ingenieria'
+
+
+6.-Todos los alumnos de TSU de la materia 4 en el periodo Mayo-Agosto del 2013
+que tienen entre 2 y 5 faltas y que tienen mas de 2 retardos.
+
+select tipoalumno, nommateria, nomperiodo, tipoasistencia
+from tipoalumnos inner join alumnos on 
+tipoalumnos.id_tipoalumno=alumnos.id_tipoalumno
+inner join agrupaciones on alumnos.id_alumno=agrupaciones.id_alumno
+inner join materias on agrupaciones.id_materia=materias.id_materia
+inner join periodos on agrupaciones.id_periodo=periodos.id_periodo
+inner join asistencias on agrupaciones.id_agrupacion=asistencias.id_agrupacion
+inner join tipoasistencia on asistencias.id_tipoasistencia=tipoasistencia.id_tipoasistencia
+where tipoalumno='TSU'  and nomperiodo='May-Ago 2013' and tipoasistencia='Falta' and nommateria='Contabilidad'
+
+
+7.-Todos los alumnos de Ingeniería de la materia 3
+
+Todos los alumnos de Ingeniería de la materia 3
+select tipoalumno, nommateria
+from tipoalumnos inner join alumnos on 
+tipoalumnos.id_tipoalumno=alumnos.id_tipoalumno
+inner join agrupaciones on alumnos.id_alumno=agrupaciones.id_alumno
+inner join materias on agrupaciones.id_materia=materias.id_materia
+where tipoalumno = 'Ingenieria' and nommateria = 'Programacion'
+
+
+8.-Todos los grupos que la media de sus promedios sea entre 8 y 8.5 ordenados por
+periodos y año
+
+select nomgrupo AS 'GRUPO',AVG (calificaciondelparcial) AS 'PROMEDIO MEDIO', nomperiodo AS 'PERIODO' 
+from calificacionesalumnos inner join agrupaciones on
+calificacionesalumnos.id_agrupacion=agrupaciones.id_agrupacion
+inner join grupos on agrupaciones.id_grupo=grupos.id_grupo
+inner join periodos on agrupaciones.id_periodo=periodos.id_periodo
+where  calificaciondelparcial between 8.0 and 8.5  order by nomperiodo
+
+
+9.-Todos los grupos que tienen clase en el salón 5 con el profesor 10 en un horario de 8 a 10
+
+select nomgrupo, nomsalon, nommateria, horainicio
+from grupos inner join agrupaciones on 
+grupos.id_grupo=agrupaciones.id_grupo
+inner join materias on materias.id_materia=agrupaciones.id_materia
+inner join horarios on agrupaciones.id_agrupacion=horarios.id_agrupacion
+inner join salones on horarios.id_salon=salones.id_salon
+where  nomsalon='CA10' AND horainicio between '08:00:00' AND '10:00:00'
+
+
+10.-El promedio de las calificaciones de los alumnos en el periodo Septiembre-
+Diciembre del 2011 del profesor 6 para la materia 3
+
+select AVG (calificaciondelparcial) AS 'PROMEDIO MEDIO',nomperiodo ,nommateria from calificacionesalumnos 
+inner join agrupaciones on
+calificacionesalumnos.id_agrupacion=agrupaciones.id_agrupacion
+inner join periodos on agrupaciones.id_periodo=periodos.id_periodo
+inner join materias on agrupaciones.id_materia=materias.id_materia
+where nomperiodo= 'May-Ago 2012' and nommateria ='Software'
+
+
+12.-los mejores 10 promedios para el 1er parcial de la materia 4 en el periodo Septiembre-Diciembre y los nombres de los profesores.
+
+select calificaciondelparcial ,nomparcial,nomperiodo from  calificacionesalumnos 
+inner join agrupaciones on calificacionesalumnos.id_agrupacion=agrupaciones.id_agrupacion
+inner join periodos on agrupaciones.id_periodo=periodos.id_periodo
+inner join parciales on agrupaciones.id_parcial=parciales.id_parcial
+where nomparcial='Primero' and nomperiodo ='Sep-Dic 2010' and calificaciondelparcial between 9.6 and 10
+
+
+
+
+
